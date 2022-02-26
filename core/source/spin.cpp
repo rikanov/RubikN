@@ -2,14 +2,14 @@
 
 const Color::Modifier Spin::color() const
 {
-  return Perm3( m_id ) [ GetAxis::Z.inv() ].color();
+  return Perm3( m_id ) [ _Z.inv() ].color();
 }
 
 std::string Spin::str() const
 {
   std::string result;
   Perm3 perm( m_id );
-  for ( auto orient : { GetAxis::X.inv(), GetAxis::Y.inv(), GetAxis::Z.inv() } )
+  for ( auto orient : { _X.inv(), _Y.inv(), _Z.inv() } )
   {
     result.push_back( perm[ orient ].facet() );
   }

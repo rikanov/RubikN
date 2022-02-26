@@ -2,7 +2,6 @@
 #define ___CUBE_FRAMEWORK__H
 
 #include <cposition.h>
-#include <layer.h>
 
 template< cube_size N >
 class CFrame
@@ -71,6 +70,7 @@ void CFrame<N>::printLine( const Spin spin, const size_t line ) const
     const auto state = whatIs( Coords<N>( x, line, N - 1 ) * spin );
     ( state * spin.inv() ).plot();
   }
+  clog_( " " );
 }
 
 template< cube_size N>
@@ -78,24 +78,24 @@ void CFrame<N>::print() const
 {
   for ( size_t line = 0; line < N; ++ line )
   {
-    clog_( std::string( 2 * N - 1, ' ' ) );
-    printLine( Tilt::X[1], N - 1 - line );
+    clog_( std::string( 2 * N + 1, ' ' ) );
+    printLine( Spin( _X, 1), N - 1 - line );
     NL();
   }
-
+  NL();
   for ( size_t line = 0; line < N; ++ line )
   {
-    printLine( Tilt::Y[1], N - 1 - line );
-    printLine( Tilt::Y[0], N - 1 - line );
-    printLine( Tilt::Y[3], N - 1 - line );
-    printLine( Tilt::Y[2], N - 1 - line );
+    printLine( Spin( _Y, 1 ), N - 1 - line );
+    printLine( Spin( _Y, 0 ), N - 1 - line );
+    printLine( Spin( _Y, 3 ), N - 1 - line );
+    printLine( Spin( _Y, 2 ), N - 1 - line );
     NL();
   }
-
+  NL();
   for ( size_t line = 0; line < N; ++ line )
   {
-    clog_( std::string( 2 * N - 1, ' ' ) );
-    printLine( Tilt::X[3], N - 1 - line );
+    clog_( std::string( 2 * N + 1, ' ' ) );
+    printLine( Spin( _X, 3), N - 1 - line );
     NL();
   }
   NL();

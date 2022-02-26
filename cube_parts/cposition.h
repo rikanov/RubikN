@@ -19,7 +19,7 @@ public:
 
   uint32_t coords() const
   {
-    return m_coords[ m_state.id() ];
+    return LookUp( m_coords.id(), m_state.id() );
   }
 
   Spin state() const
@@ -42,8 +42,8 @@ public:
   {
     if ( m_coords.layers() & slice.layers() )
     {
-      m_coords = LookUp( m_coords.id(), slice.twist() );
-      m_state *= slice.twist();
+      m_coords = LookUp( m_coords.id(), slice.spin() );
+      m_state *= slice.spin();
     }
   }
 

@@ -41,12 +41,6 @@ public:
     return norm * sign * sgn( m_id * axis.m_id );
   }
 
-
-  constexpr Axis twist( const Axis & axis ) const
-  {
-    return *this * axis;
-  }
-
   constexpr operator int () const
   {
     return m_id;
@@ -55,11 +49,6 @@ public:
   constexpr Axis inv() const
   {
     return Axis( - m_id );
-  }
-
-  constexpr void invertIf( const bool i )
-  {
-    m_id *= i ? -1 : 1;
   }
 
   constexpr void invert()
@@ -81,13 +70,13 @@ public:
 
 };
 
-namespace GetAxis
-{
-  constexpr Axis X = Axis( 1 );
-  constexpr Axis Y = Axis( 2 );
-  constexpr Axis Z = Axis( 3 );
-  constexpr Axis NA = Axis( 0 );
-};
+static constexpr Axis  _X = Axis( 1 );
+static constexpr Axis  _Y = Axis( 2 );
+static constexpr Axis  _Z = Axis( 3 );
+static constexpr Axis _Xi = Axis( -1 );
+static constexpr Axis _Yi = Axis( -2 );
+static constexpr Axis _Zi = Axis( -3 );
+static constexpr Axis _NA = Axis( 0 );
 
 std::ostream & operator << ( std::ostream &, const Axis & );
 

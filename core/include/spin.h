@@ -12,6 +12,11 @@ class Spin
 {
   static constexpr SpinLookUp LookUp = 0;
 
+  static constexpr uint8_t Twist [3][4] = {
+                                            { 0,  3, 12, 15 },    // RUF, RFD, RDB, RBU
+                                            { 0,  8,  6,  2 },   //  RUF, BUR, LUB, FUL
+                                            { 0, 13, 18,  7 },  //   RUF, ULF, LDF, DRF
+                                          };
 protected:
   uint8_t m_id;
 
@@ -24,6 +29,12 @@ public:
 
   constexpr Spin( const uint8_t & cid )
     : m_id( cid )
+  {
+
+  }
+
+  constexpr Spin( const Axis axis, const Turn turn )
+    : m_id( Twist[ axis - 1 ][ turn ] )
   {
 
   }
@@ -47,6 +58,12 @@ public:
   {
     m_id = LookUp( m_id, spin.m_id );
   }
+
+  constexpr Spin operator | ( const Spin & spin ) const
+  {
+    return spin.inv() * *this * spin;
+  }
+
   constexpr Spin inv() const
   {
     return LookUp.inv( m_id );
@@ -72,33 +89,7 @@ public:
   {
     return Perm3( LookUp.inv( m_id ) ).whatIs( axis );
   }
-
 };
-
-struct Tilt
-{
-  static constexpr Spin X[4] = { 0,  3, 12, 15 };    // RUF, RFD, RDB, RBU
-  static constexpr Spin Y[4] = { 0,  8,  6,  2 };   //  RUF, BUR, LUB, FUL
-  static constexpr Spin Z[4] = { 0, 13, 18,  7 };  //   RUF, ULF, LDF, DRF
-
-  static constexpr Spin get( const Axis axis, const Turn turn );
-};
-
-constexpr
-Spin Tilt::get( const Axis axis, const Turn turn)
-{
-  switch( axis )
-  {
-    case 1:
-      return X[turn];
-    case 2:
-      return Y[turn];
-    case 3:
-      return Z[turn];
-    default:
-      return 0;
-  };
-}
 
 std::ostream & operator << ( std::ostream &, const Spin & );
 

@@ -87,7 +87,7 @@ template< cube_size N > constexpr
 Coords<N> Coords<N>::operator * ( const Spin & spin ) const
 {
   Coords result;
-  for ( Axis a : { GetAxis::X, GetAxis::Y, GetAxis::Z } )
+  for ( Axis a : { _X, _Y, _Z } )
   {
     const Axis   axis  = spin.what( a );
     const size_t layer = m_coords[ abs( axis ) ];

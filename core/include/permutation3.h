@@ -21,7 +21,7 @@ public:
   {
 
   }
-  constexpr Perm3( const size_t & id )
+  constexpr Perm3( const uint8_t & id )
   {
     const size_t pid = id % 6;;
     for( int i : { 1, 2, 3 } )
@@ -32,8 +32,14 @@ public:
     const bool sign1 = ( id / 6 ) & 1 ;
     const bool sign2 = ( id / 6 ) & 2 ;
 
-    m_perm[1].invertIf( sign1 );
-    m_perm[2].invertIf( sign2 );
+    if ( sign1 )
+    {
+      m_perm[1].invert();
+    }
+    if ( sign2 )
+    {
+      m_perm[2].invert();
+    }
     m_perm[3] = m_perm[1] * m_perm[2];
   }
 
@@ -62,14 +68,17 @@ public:
     {
       const Axis axis = twist.m_perm[i];
       result.m_perm[i] = m_perm[ abs( axis ) ];
-      result.m_perm[i].invertIf( axis.reverted() );
+      if ( axis.reverted() )
+      {
+        result.m_perm[i].invert();
+      }
     }
     return result;
   }
 
   constexpr Axis whatIs( const Axis axis ) const
   {
-    return axis.reverted() ? m_perm[ abs( axis ) ].inv() : m_perm[ abs( axis ) ];
+    return axis.reverted() ? m_perm[ -axis ].inv() : m_perm[ axis ];
   }
 
   constexpr Axis operator [] ( const Axis axis ) const
