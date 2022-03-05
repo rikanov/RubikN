@@ -1,17 +1,5 @@
 #include <cframework.h>
-#include <group.h>
-
-Spin operator / ( const Spin spin, const Axis axis )
-{
-  Spin result;
-  return result;
-}
-
-Spin operator % ( const Spin spin, const Axis axis )
-{
-  Spin result;
-  return result;
-}
+#include <cube_rotations.h>
 
 int main(int argc, char **argv)
 {
@@ -19,5 +7,15 @@ int main(int argc, char **argv)
   CRotationLookUp<5> cl(0);
   cl.print();
 
+  CFrame<4> frame;
+  frame.print();
+  Slice<4> a( 3, 1 );
+
+  clog( a );
+  frame << a;
+  frame.print();
+  clog( a * Spin( _Z, 3 ) );
+  frame << ( a * Spin( _Z, 3 ) );
+  frame.print();
   return 0;
 }

@@ -4,20 +4,12 @@
 
 #include <spin_lookup.h>
 
-#define all_spin( spin ) for ( Spin spin : { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 } )
-
-using Turn = uint8_t;
+#define all_spin( spin ) for ( Spin spin( 0 ); spin.id() < 24; ++ spin )
 
 class Spin
 {
   static constexpr SpinLookUp LookUp = 0;
 
-  static constexpr uint8_t Twist [3][4] = {
-                                            { 0,  3, 12, 15 },    // RUF, RFD, RDB, RBU
-                                            { 0,  8,  6,  2 },   //  RUF, BUR, LUB, FUL
-                                            { 0, 13, 18,  7 },  //   RUF, ULF, LDF, DRF
-                                          };
-protected:
   uint8_t m_id;
 
 public:
@@ -27,21 +19,16 @@ public:
 
   }
 
-  constexpr Spin( const uint8_t & cid )
+  constexpr explicit Spin( const uint8_t & cid )
     : m_id( cid )
   {
 
   }
 
   constexpr Spin( const Axis axis, const Turn turn )
-    : m_id( Twist[ axis - 1 ][ turn ] )
+    : m_id( LookUp.twist( axis, turn ) )
   {
 
-  }
-
-  constexpr bool ident() const
-  {
-    return 0 == m_id;
   }
 
   constexpr bool operator == ( const Spin spin ) const
@@ -51,7 +38,7 @@ public:
 
   constexpr Spin operator * ( const Spin & spin ) const
   {
-    return LookUp( m_id, spin.m_id );
+    return Spin( LookUp( m_id, spin.m_id ) );
   }
 
   constexpr void operator *= ( const Spin & spin )
@@ -64,9 +51,14 @@ public:
     return spin.inv() * *this * spin;
   }
 
+  constexpr Spin operator ++ ()
+  {
+    return Spin( m_id ++ );
+  }
+
   constexpr Spin inv() const
   {
-    return LookUp.inv( m_id );
+    return Spin( LookUp.inv( m_id ) );
   }
 
   constexpr uint8_t id() const
@@ -89,6 +81,11 @@ public:
   {
     return Perm3( LookUp.inv( m_id ) ).whatIs( axis );
   }
+  constexpr Axis twister() const
+  {
+    return LookUp.twister( m_id );
+  }
+
 };
 
 std::ostream & operator << ( std::ostream &, const Spin & );

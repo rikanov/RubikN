@@ -50,7 +50,7 @@ Spin CFrame<N>::whatIs( const Coords<N> & pos ) const
       return spin.inv();
     }
   }
-  return 0;
+  return Spin( 0 );
 }
 
 template< cube_size N >
@@ -79,7 +79,7 @@ void CFrame<N>::print() const
   for ( size_t line = 0; line < N; ++ line )
   {
     clog_( std::string( 2 * N + 1, ' ' ) );
-    printLine( Spin( _X, 1), N - 1 - line );
+    printLine( Spin( _X, 1 ), N - 1 - line );
     NL();
   }
   NL();
@@ -95,7 +95,7 @@ void CFrame<N>::print() const
   for ( size_t line = 0; line < N; ++ line )
   {
     clog_( std::string( 2 * N + 1, ' ' ) );
-    printLine( Spin( _X, 3), N - 1 - line );
+    printLine( Spin( _X, 3 ), N - 1 - line );
     NL();
   }
   NL();

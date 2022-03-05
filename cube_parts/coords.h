@@ -7,13 +7,8 @@
 template< cube_size N >
 class Coords
 {
-  uint8_t     m_coords[4] = {};
-  size_t      m_id;
-
+  size_t            m_id;
   BitSet<uint32_t>  m_layers;
-
-  constexpr void setID();
-  constexpr void setMask();
 
 public:
   constexpr Coords();
@@ -27,6 +22,7 @@ public:
 
   constexpr size_t id() const;
   constexpr size_t layers() const;
+  constexpr size_t coord( const Axis ) const;
   std::string str() const;
 };
 
@@ -35,6 +31,9 @@ Coords<N>::Coords()
   : m_id( 0 )
   , m_layers( 0 )
 {
+  m_layers.add( N * 0 );
+  m_layers.add( N * 1 );
+  m_layers.add( N * 2 );
 }
 
 template< cube_size N > constexpr
@@ -42,33 +41,24 @@ Coords<N>::Coords( const Coords<N> & c )
   : m_id( c.m_id)
   , m_layers( c.m_layers )
 {
-  for ( size_t i : { 1, 2, 3} )
-  {
-    m_coords[i] = c.m_coords[i];
-  }
+
 }
 
 template< cube_size N > constexpr
 Coords<N>::Coords( const uint8_t x, const uint8_t y, const uint8_t z )
-  : m_id( 0 )
+  : m_id( x + N * y + N * N * z )
   , m_layers( 0 )
 {
-  m_coords[1] = x;
-  m_coords[2] = y;
-  m_coords[3] = z;
-  setID();
-  setMask();
+  m_layers.add( x + N * 0 );
+  m_layers.add( y + N * 1 );
+  m_layers.add( z + N * 2 );
 }
 
 template< cube_size N > constexpr
 Coords<N>::Coords( const size_t id )
-  : m_id( id )
-  , m_layers( 0 )
+  : Coords( id % N, ( id / N ) % N, id / ( N * N ) )
 {
-  m_coords[1] = id % N;
-  m_coords[2] = ( id / N ) % N;
-  m_coords[3] = id / ( N * N );
-  setMask();
+
 }
 
 template< cube_size N > constexpr
@@ -76,27 +66,13 @@ Coords<N> & Coords<N>::operator = ( const Coords<N> & c )
 {
   m_id = c.m_id;
   m_layers = c.m_layers;
-  for ( size_t i : { 1, 2, 3} )
-  {
-    m_coords[i] = c.m_coords[i];
-  }
   return *this;
 }
 
 template< cube_size N > constexpr
 Coords<N> Coords<N>::operator * ( const Spin & spin ) const
 {
-  Coords result;
-  for ( Axis a : { _X, _Y, _Z } )
-  {
-    const Axis   axis  = spin.what( a );
-    const size_t layer = m_coords[ abs( axis ) ];
-
-    result.m_coords[a] = axis < 0 ? N - 1 - layer : layer;
-  }
-  result.setID();
-  result.setMask();
-  return result;
+  return Coords<N> ( coord( spin.what( _X ) ), coord( spin.what( _Y ) ), coord( spin.what( _Z ) ) );
 }
 
 template< cube_size N > constexpr
@@ -111,20 +87,30 @@ size_t Coords<N>::layers() const
   return m_layers;
 }
 
-template< cube_size N > constexpr
-void Coords<N>::setID()
+template< size_t N > constexpr
+size_t Coords<N>::coord( const Axis axis ) const
 {
-  m_id = m_coords[1] + N * m_coords[2] + N * N * m_coords[3];
-}
-
-template< cube_size N > constexpr
-void Coords<N>::setMask()
-{
-  m_layers = 0;
-  for ( int i : { 0, 1, 2 } )
+  switch( axis )
   {
-    m_layers.add( m_coords[ i + 1 ] + N * i );
+    case _X:
+      return m_id % N;
+    case _X.inv():
+      return N - 1 - m_id % N;
+
+    case _Y:
+      return ( m_id / N ) % N;
+    case _Y.inv():
+      return N - 1 - ( m_id / N ) % N;
+
+    case _Z:
+      return m_id / ( N * N );
+    case _Z.inv():
+      return N - 1 - m_id / ( N * N );
+
+    default:
+      ;
   }
+  return 0;
 }
 
 template< cube_size N>
@@ -133,7 +119,7 @@ std::string Coords<N>::str() const
   std::string result( "< " );
   for ( int i : { 1, 2, 3 } )
   {
-    result += numR( m_coords[i], 2 );
+    result += numR( coord( i ), 2 );
     result += " ";
   }
   result += " >";

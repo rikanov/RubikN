@@ -30,7 +30,7 @@ void CRotationLookUp<N>::init()
   for ( size_t id = 0; id < Size; ++ id )
   {
     const size_t layers = id < N ? ( 1ULL << id ) : ( 1ULL << ( id - N + 2 ) ) - 1;
-    m_rotation[ id + 1 ] = Slice<N> ( _X, layers, 1 );
+    m_rotation[ id + 1 ] = Slice<N> ( layers, 1 );
   }
   for ( size_t id = 1; id <= Size; ++ id )
   {

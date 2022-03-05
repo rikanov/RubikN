@@ -8,8 +8,6 @@
 
 typedef const size_t cube_size;
 
-
-
  // Signum
 //--------
 template < typename Type > inline constexpr

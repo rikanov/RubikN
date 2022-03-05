@@ -114,33 +114,12 @@ public:
   {
     exclude( 1ULL << bit );
   }
-
-  void print_( const uint8_t length, const uint8_t slice ) const;
-  void print ( const uint8_t length, const uint8_t slice ) const;
-
 };
 
 template< typename Type >
-void BitSet<Type>::print_(const uint8_t length, const uint8_t slice) const
+std::ostream & operator << ( std::ostream & os, const BitSet<Type> & bs )
 {
-  const Color::Modifier color[2] = { Color::blue, Color::green };
-  for( long id = length - 1; id >= 0; --id )
-  {
-    if ( slice > 0 && ( length - 1 - id ) % slice == 0 )
-    {
-      slog_ ( "", Color::white, '|', Color::off );
-    }
-    uint64_t mask = ( 1ULL << id );
-    const bool bit = ( m_data & mask ) == mask;
-    slog_ ( "", color[bit], bit, Color::off );
-  }
-}
-
-template< typename Type >
-void BitSet<Type>::print(const uint8_t length, const uint8_t slice) const
-{
-  print_( length, slice );
-  NL();
+  return os << bs << Color::off;
 }
 
 #endif  //  ! ___BIT64_SET__H

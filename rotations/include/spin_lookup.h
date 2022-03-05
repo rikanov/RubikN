@@ -2,18 +2,24 @@
 #define ___SPIN_LOOKUP__H
 
 #include <axis.h>
+#include <turn.h>
 #include <permutation3.h>
 
 
 class SpinLookUp
 {
+  static constexpr uint8_t Twist [4][4] = {
+                                            { 0,  0,  0,  0 },
+                                            { 0,  3, 12, 15 },    // RUF, RFD, RDB, RBU
+                                            { 0,  8,  6,  2 },   //  RUF, BUR, LUB, FUL
+                                            { 0, 13, 18,  7 },  //   RUF, ULF, LDF, DRF
+                                          };
   uint8_t m_compose [ 24 ] [ 24 ] = {};
-  uint8_t m_normal  [ 24 ] [ 24 ] [ 2 ] = {};
   uint8_t m_invert  [ 24 ] = {};
+  uint8_t m_twister [ 24 ] = {};
 
   constexpr void init();
   constexpr void set( const uint8_t id1, const uint8_t id2 );
-  constexpr void normalizer();
 
 public:
 
@@ -37,6 +43,16 @@ public:
   {
     return Perm3( side ) * Perm3( coset ) * Perm3( inv( side ) );
   }
+
+  constexpr uint8_t twist( const Axis axis, const Turn turn ) const
+  {
+    return Twist[ axis ][ turn.id() ];
+  }
+
+  constexpr Axis twister( const uint8_t id ) const
+  {
+    return m_twister[id];
+  }
 };
 
 constexpr
@@ -59,6 +75,14 @@ void SpinLookUp::init()
     for ( size_t id2 = 0; id2 < 24; ++ id2 )
     {
       set( id1, id2 );
+    }
+  }
+
+  for( Axis axis : { _X, _Y, _Z } )
+  {
+    for( int turn : { 1, 2, 3 } )
+    {
+      m_twister[ Twist[ axis ][ turn ] ] = axis;
     }
   }
 }
