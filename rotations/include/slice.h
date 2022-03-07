@@ -2,24 +2,8 @@
 #define ___RUBIK_SLICE__H
 
 #include <spin.h>
+#include <layers.h>
 #include <bitset>
-
-class Layers
-{
-  uint8_t m_id;
-
-public:
-  constexpr Layers(): m_id( 0 ) {}
-  constexpr Layers( const uint8_t & id ): m_id( id ) {}
-  constexpr size_t id() const { return m_id; }
-  constexpr size_t reverse() const;
-};
-
-constexpr inline
-size_t Layers::reverse() const
-{
-  return ( ( m_id * 0x80200802ULL ) & 0x0884422110ULL ) * 0x0101010101ULL >> 32 ;
-}
 
 template < cube_size N >
 class Slice
@@ -46,14 +30,7 @@ public:
 
   size_t layers () const
   {
-    if ( twister() < 0 )
-    {
-      return m_layers.reverse() << N * ( - twister() - 1 );
-    }
-    else
-    {
-      return m_layers.id() << N * ( twister() - 1 );
-    }
+    return m_layers.id() << N * ( twister() - 1 );
   }
 
   Axis twister() const
@@ -67,9 +44,9 @@ public:
   }
 
   constexpr
-  Slice operator * ( const Spin spin )
+  Slice operator * ( const Spin spin ) const
   {
-    return Slice<N>( m_layers, m_spin | spin );
+    return Slice<N>( spin.where( twister() ) < 0 ? m_layers.reverse<N>() : m_layers, m_spin | spin );
   }
 };
 
