@@ -3,7 +3,7 @@
 include_directories( include )
 include_directories( ../CLi/include )
 
-add_library( rotations source/axis.cpp
+add_library( simplex source/axis.cpp
                        source/spin.cpp
                        source/turn.cpp
                   )

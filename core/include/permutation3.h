@@ -88,4 +88,3 @@ public:
 };
 
 #endif  //  ! ___AXIS_PERMUTATIONS__H
-

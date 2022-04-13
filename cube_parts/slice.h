@@ -8,20 +8,25 @@
 template < cube_size N >
 class Slice
 {
-  Layers  m_layers;
-  Spin    m_spin;
+  Layers<N>  m_layers;
+  Spin       m_spin;
 
-  constexpr Slice( const Layers layers, const Spin spin )
+public:
+
+  constexpr Slice()
+    : m_layers(0), m_spin()
+  {
+
+  }
+
+  constexpr Slice( const Layers<N> layers, const Spin spin )
     : m_layers( layers )
     , m_spin( spin )
   {
 
   }
 
-public:
-
-  constexpr Slice() : m_layers(0), m_spin() {}
-  constexpr Slice( const Layers layers, const Turn turn )
+  constexpr Slice( const Layers<N> layers, const Turn turn )
     : m_layers( layers )
     , m_spin( Spin( _X, turn ) )
   {
@@ -46,7 +51,7 @@ public:
   constexpr
   Slice operator * ( const Spin spin ) const
   {
-    return Slice<N>( spin.where( twister() ) < 0 ? m_layers.reverse<N>() : m_layers, m_spin | spin );
+    return Slice<N>( spin.where( twister() ) < 0 ? m_layers.reverse() : m_layers, m_spin | spin );
   }
 };
 

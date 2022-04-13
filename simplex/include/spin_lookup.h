@@ -38,12 +38,6 @@ public:
     return m_invert[ id ];
   }
 
-  // a * b * a'
-  constexpr Perm3 conjugation ( const uint8_t coset, const uint8_t side ) const
-  {
-    return Perm3( side ) * Perm3( coset ) * Perm3( inv( side ) );
-  }
-
   constexpr uint8_t twist( const Axis axis, const Turn turn ) const
   {
     return Twist[ axis ][ turn.id() ];
