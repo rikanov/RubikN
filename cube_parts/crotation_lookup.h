@@ -6,9 +6,9 @@
 template< cube_size N >
 class CRotationLookUp
 {
-  static constexpr size_t LayerSetSize = N - 1 + ( ( N < 6 ) ? N - 2 : 0 );
+  static constexpr size_t LayerSetSize = N < 6 ? 2 * N - 3 : N;
 
-  std::array< Slice<N>, 9 * LayerSetSize > m_rotation;
+  std::array< Rotate<N>, 9 * LayerSetSize > m_rotation;
   size_t m_nextRot;
 
   constexpr void init( Axis );
@@ -40,15 +40,18 @@ void CRotationLookUp<N>::init( Axis axis )
 template< cube_size N > constexpr
 void CRotationLookUp<N>::init( Spin spin )
 {
-  for ( Layer layer = 0; layer < N - 1; ++ layer )
+  const size_t slices = N > 5 ? N : ( N - 1 );
+  for ( Layer layer = 0; layer < slices; ++ layer )
   {
-    Layers<N> layers( 1 << layer );
-    m_rotation[ m_nextRot ++ ] = Slice<N>( layers, spin );
+    const Layers<N> layers( 1 << layer );
+    m_rotation[ m_nextRot ++ ] = Rotate<N>( layers, spin );
   }
-  for ( Layer layer = 2; N < 6 && layer < N; ++ layer )
+
+  const size_t blocks = N > 5 ? 0 : N;
+  for ( Layer layer = 2; layer < blocks; ++ layer )
   {
-    Layers<N> layers( ( 1 << layer ) - 1 );
-    m_rotation[ m_nextRot ++ ] = Slice<N>( layers, spin );
+    const Layers<N> layers( ( 1 << layer ) - 1 );
+    m_rotation[ m_nextRot ++ ] = Rotate<N>( layers, spin );
   }
 }
 

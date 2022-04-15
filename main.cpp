@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 
   CFrame<4> frame;
   frame.print();
-  Slice<4> a( 1, 1 );
+    Rotate<4> a( 1, 1 );
 
   clog( a );
   frame << a;

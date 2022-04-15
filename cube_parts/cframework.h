@@ -22,7 +22,7 @@ public:
     init();
   }
 
-  void operator << ( const Slice<N> & slice );
+  void operator << ( const Rotate<N> & slice );
   void printLine( const Spin spin, const size_t line ) const;
   void print() const;
 };
@@ -54,7 +54,7 @@ Spin CFrame<N>::whatIs( const Coords<N> & pos ) const
 }
 
 template< cube_size N >
-void CFrame<N>::operator << ( const Slice<N> & slice )
+void CFrame<N>::operator << ( const Rotate<N> & slice )
 {
   for ( auto & pos : m_frame )
   {

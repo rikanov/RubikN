@@ -6,27 +6,27 @@
 #include <bitset>
 
 template < cube_size N >
-class Slice
+class Rotate
 {
   Layers<N>  m_layers;
   Spin       m_spin;
 
 public:
 
-  constexpr Slice()
+  constexpr Rotate()
     : m_layers(0), m_spin()
   {
 
   }
 
-  constexpr Slice( const Layers<N> layers, const Spin spin )
+  constexpr Rotate( const Layers<N> layers, const Spin spin )
     : m_layers( layers )
     , m_spin( spin )
   {
 
   }
 
-  constexpr Slice( const Layers<N> layers, const Turn turn )
+  constexpr Rotate( const Layers<N> layers, const Turn turn )
     : m_layers( layers )
     , m_spin( Spin( _X, turn ) )
   {
@@ -49,14 +49,14 @@ public:
   }
 
   constexpr
-  Slice operator * ( const Spin spin ) const
+    Rotate operator * ( const Spin spin ) const
   {
-    return Slice<N>( spin.where( twister() ) < 0 ? m_layers.reverse() : m_layers, m_spin | spin );
+    return Rotate<N>( spin.where( twister() ) < 0 ? m_layers.reverse() : m_layers, m_spin | spin );
   }
 };
 
 template< cube_size N >
-std::ostream & operator << ( std::ostream & os, const Slice<N> & slice )
+std::ostream & operator << ( std::ostream & os, const Rotate<N> & slice )
 {
   return os << slice.twister() << " [" << std::bitset< 3*N > ( slice.layers() ) << "] " << slice.spin() << Color::off;
 }

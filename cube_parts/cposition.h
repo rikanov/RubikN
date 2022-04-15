@@ -38,7 +38,7 @@ public:
     m_state *= spin;
   }
 
-  void operator *= ( const Slice<N> & slice )
+  void operator *= ( const Rotate<N> & slice )
   {
     if ( m_coords.layers() & slice.layers() )
     {
