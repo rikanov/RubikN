@@ -1,8 +1,8 @@
-#ifndef ___RUBIK_SLICE__H
-#define ___RUBIK_SLICE__H
+#ifndef ___CUBE_ROTATION_OBJECTS__H
+#define ___CUBE_ROTATION_OBJECTS__H
 
 #include <spin.h>
-#include <layers.h>
+#include <clayers.h>
 #include <bitset>
 
 template < cube_size N >
@@ -61,4 +61,4 @@ std::ostream & operator << ( std::ostream & os, const Rotate<N> & slice )
   return os << slice.twister() << " [" << std::bitset< 3*N > ( slice.layers() ) << "] " << slice.spin() << Color::off;
 }
 
-#endif  //  ! ___RUBIK_SLICE__H
+#endif  //  ! ___CUBE_ROTATION_OBJECTS__H

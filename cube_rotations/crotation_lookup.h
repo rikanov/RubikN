@@ -1,20 +1,24 @@
 #ifndef ___CUBE_ROTATIONS__H
 #define ___CUBE_ROTATIONS__H
 
-#include <slice.h>
+#include <crotation_objects.h>
 
 template< cube_size N >
 class CRotationLookUp
 {
-  static constexpr size_t LayerSetSize = N < 6 ? 2 * N - 3 : N;
+  static constexpr size_t _Size = 9 * ( N < 6 ? 2 * N - 3 : N );
 
-  std::array< Rotate<N>, 9 * LayerSetSize > m_rotation;
+  std::array< Rotate<N>, _Size > m_rotation;
   size_t m_nextRot;
 
   constexpr void init( Axis );
   constexpr void init( Spin );
 public:
   constexpr CRotationLookUp( int );
+  static constexpr size_t Size()
+  {
+    return _Size;
+  }
   void print() const;
 };
 
