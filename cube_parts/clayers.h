@@ -1,5 +1,5 @@
-#ifndef ___CUBE_LAYERS__H
-#define ___CUBE_LAYERS__H
+#ifndef ___CUBE_ROTATION_LAYERS__H
+#define ___CUBE_ROTATION_LAYERS__H
 
 #include <base.h>
 
@@ -24,4 +24,4 @@ public:
   }
 };
 
-#endif  //  ! ___CUBE_LAYERS__H
+#endif  //  ! ___CUBE_ROTATION_LAYERS__H

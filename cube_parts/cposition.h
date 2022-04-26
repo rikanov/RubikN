@@ -2,7 +2,7 @@
 #define ___CUBELET_POSITION__H
 
 #include <cposition_lookup.h>
-#include <slice.h>
+#include <crotation_objects.h>
 
 template< cube_size N >
 class CPosition
@@ -25,6 +25,11 @@ public:
   Spin state() const
   {
     return m_state;
+  }
+
+  void set( const Spin & spin )
+  {
+    m_state = spin;
   }
 
   CPosition operator * ( const Spin & spin ) const

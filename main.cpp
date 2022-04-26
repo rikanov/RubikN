@@ -1,5 +1,6 @@
 #include <cframework.h>
 #include <crotation_lookup.h>
+#include <rsubspace.h>
 
 template< cube_size N > constexpr inline
 size_t reverse( uint8_t m_id )
@@ -23,5 +24,6 @@ int main(int argc, char **argv)
   clog( a * Spin( _Z, 3 ), a * Spin( _Z, 1 ) );
   frame << ( a * Spin( _Z, 3 ) );
   frame.print();
+  RSubspace<4> rs;
   return 0;
 }
