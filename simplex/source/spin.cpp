@@ -2,7 +2,7 @@
 
 const Color::Modifier Spin::color() const
 {
-  return Perm3( m_id ) [ _Z.inv() ].color();
+  return Perm3( m_id ) [ _Zi ].color();
 }
 
 std::string Spin::str() const

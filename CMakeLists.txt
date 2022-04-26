@@ -11,13 +11,12 @@ include_directories( CLi/include )
 include_directories( 3Dview/include )
 
 
-add_subdirectory( 3Dview )
 add_subdirectory( CLi )
 add_subdirectory( simplex )
 
 add_executable( rubikn main.cpp )
 
 set_property( TARGET rubikn PROPERTY CXX_STANDARD 17 )
-target_link_libraries( rubikn cli simplex rubik3d )
+target_link_libraries( rubikn cli simplex )
 
 install( TARGETS rubikn RUNTIME DESTINATION bin )

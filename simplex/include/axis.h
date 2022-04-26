@@ -6,7 +6,17 @@
 class Axis
 {
   static constexpr const char * Facets ="FUR LDB";
-  static const Color::Modifier Colors[7];
+  
+  static constexpr Color::Modifier Colors[7] = { Color::red,
+                                          Color::blue,
+                                          Color::yellow,
+                                          Color::gray,
+                                          Color::white,
+                                          Color::green,
+                                          Color::light
+                                        };
+
+
   int m_id;
 
 

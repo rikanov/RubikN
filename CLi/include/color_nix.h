@@ -45,8 +45,8 @@ namespace Color
   {
     Code m_code;
   public:
-    Modifier() : m_code( DEFAULT ) {}
-    Modifier( Code pCode ) : m_code( pCode ) {}
+    constexpr Modifier() : m_code( DEFAULT ) {}
+    constexpr Modifier( Code pCode ) : m_code( pCode ) {}
     
     Code code() const 
     {
@@ -65,20 +65,21 @@ namespace Color
     
   };
   
-  extern Modifier off;
-  extern Modifier bold;
-  extern Modifier uline;
-  extern Modifier flash;
-  extern Modifier black;
-  extern Modifier red;
-  extern Modifier blue;
-  extern Modifier green;
-  extern Modifier cyan;
-  extern Modifier gray;
-  extern Modifier dark;
-  extern Modifier light;
-  extern Modifier yellow;
-  extern Modifier white;
+
+  constexpr Modifier off    ( DEFAULT    );
+  constexpr Modifier bold   ( BOLD       );
+  constexpr Modifier uline  ( ULINE      );
+  constexpr Modifier flash  ( FLASH      );
+  constexpr Modifier black  ( BLACK      );
+  constexpr Modifier red    ( LIGHT_RED  );
+  constexpr Modifier blue   ( LIGHT_BLUE );
+  constexpr Modifier green  ( GREEN      );
+  constexpr Modifier cyan   ( LIGHT_CYAN );
+  constexpr Modifier gray   ( LIGHT_GRAY );
+  constexpr Modifier dark   ( DARK_GRAY  );
+  constexpr Modifier light  ( LIGHT_MAGENTA );
+  constexpr Modifier yellow ( LIGHT_YELLOW  );
+  constexpr Modifier white  ( WHITE         );
 }
 
 #endif  //  ! ___COLOR_FOR_POSIX_CONSOLEs__H
